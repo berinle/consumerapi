@@ -1,0 +1,45 @@
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'jetty'
+
+sourceCompatibility = 1.5
+version = 1.0
+
+repositories {
+	mavenCentral()
+	flatDir(dirs: "lib")
+}
+
+libVersions = [cxf: '2.2.9']
+
+dependencies {
+	compile "org.apache.cxf:cxf-rt-frontend-jaxws:${libVersions.cxf}"	
+	compile "org.apache.cxf:cxf-rt-transports-http:${libVersions.cxf}"	
+	compile ":cxf-consumer:1.0@jar"
+	compile "log4j:log4j:1.2.12"
+	
+	providedCompile "javax.servlet:servlet-api:2.5"
+	//compile "org.apache.cxf:cxf-rt-transports-http-jetty:${libVersions.cxf}"
+	//compile "org.apache.cxf:cxf-tools-wsdlto-core:${libVersions.cxf}"
+}
+
+task listJars << {
+	configurations.compile.each {File f -> println f.name }
+}
+
+task initProject(description: 'Initialize project directory structure.') << {
+  	sourceSets.all*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets.all*.resources.srcDirs*.each { it.mkdirs() }
+}
+
+task copyJars (dependsOn: configurations.runtime.buildArtifacts, type: Copy){
+	into('build/output/lib')
+	from configurations.runtime
+	from configurations.runtime.allArtifacts*.file
+}
+
+jettyRun {
+  httpPort = 8888
+  reload = 'automatic'
+}

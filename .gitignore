@@ -1,0 +1,7 @@
+.gradle/
+build/
+
+#exclude intellij files
+consumerapi.iml
+consumerapi.ipr
+consumerapi.iws

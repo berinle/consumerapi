@@ -1,0 +1,41 @@
+v1.0
+====
+
+1) Got rid of this error by adding weblogic.xml to the WAR to prefer in WEB-INF/lib jars
+
+(see 
+http://blog.jonschneider.com/2009/02/getting-jax-ws-to-work-with-weblogic-92.html and 
+http://ws.apache.org/axis2/1_3/app_server.html
+)
+
+<Sep 10, 2010 12:35:43 PM EDT> <Error> <HTTP> <BEA-101020> <[weblogic.servlet.internal.WebAppServletContext@1eb41d6 - appName: 'consumerapi', name: 'consumerapi-1.0.war', context-path: '/consumerapi-1.0'] Servlet failed
+with Exception
+javax.xml.ws.WebServiceException: org.apache.cxf.service.factory.ServiceConstructionException: Failed to create service.
+        at org.apache.cxf.jaxws.ServiceImpl.<init>(ServiceImpl.java:152)
+        at org.apache.cxf.jaxws.spi.ProviderImpl.createServiceDelegate(ProviderImpl.java:63)
+        at javax.xml.ws.Service.<init>(Service.java:36)
+        at com.berinle.EmployeeService.<init>(EmployeeService.java:44)
+        at cxfclient.Util.invoke(Util.java:25)
+        Truncated. see log file for complete stacktrace
+org.apache.cxf.service.factory.ServiceConstructionException: Failed to create service.
+        at org.apache.cxf.wsdl11.WSDLServiceFactory.<init>(WSDLServiceFactory.java:93)
+        at org.apache.cxf.jaxws.ServiceImpl.initializePorts(ServiceImpl.java:207)
+        at org.apache.cxf.jaxws.ServiceImpl.<init>(ServiceImpl.java:150)
+        at org.apache.cxf.jaxws.spi.ProviderImpl.createServiceDelegate(ProviderImpl.java:63)
+        at javax.xml.ws.Service.<init>(Service.java:36)
+        Truncated. see log file for complete stacktrace
+javax.wsdl.WSDLException: WSDLException: faultCode=PARSER_ERROR: java.lang.IllegalArgumentException: Unable to access unsupported property javax.xml.stream.supportDTD
+        at org.apache.cxf.wsdl11.WSDLManagerImpl.loadDefinition(WSDLManagerImpl.java:228)
+        at org.apache.cxf.wsdl11.WSDLManagerImpl.getDefinition(WSDLManagerImpl.java:179)
+        at org.apache.cxf.wsdl11.WSDLServiceFactory.<init>(WSDLServiceFactory.java:91)
+        at org.apache.cxf.jaxws.ServiceImpl.initializePorts(ServiceImpl.java:207)
+        at org.apache.cxf.jaxws.ServiceImpl.<init>(ServiceImpl.java:150)
+        Truncated. see log file for complete stacktrace
+java.lang.IllegalArgumentException: Unable to access unsupported property javax.xml.stream.supportDTD
+        at weblogic.xml.stax.ConfigurationContextBase.check(ConfigurationContextBase.java:60)
+        at weblogic.xml.stax.ConfigurationContextBase.setProperty(ConfigurationContextBase.java:54)
+        at weblogic.xml.stax.XMLStreamInputFactory.setProperty(XMLStreamInputFactory.java:280)
+        at org.apache.cxf.staxutils.StaxUtils.createXMLInputFactory(StaxUtils.java:169)
+        at org.apache.cxf.staxutils.StaxUtils.getXMLInputFactory(StaxUtils.java:140)
+        Truncated. see log file for complete stacktrace
+>
